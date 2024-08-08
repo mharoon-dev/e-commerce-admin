@@ -11,8 +11,9 @@ export default function WidgetSm() {
     const getUsers = async () => {
       try {
         const res = await userRequest.get("users/?new=true");
-        setUsers(res.data);
+        setUsers(res?.data);
       } catch (err) {
+        setUsers(null);
         console.log(err);
       }
     };
@@ -23,7 +24,7 @@ export default function WidgetSm() {
     <div className="widgetSm">
       <span className="widgetSmTitle">New Join Members</span>
       <ul className="widgetSmList">
-        {users.map((user) => (
+        {users?.map((user) => (
           <li className="widgetSmListItem" key={user._id}>
             <img src={user.img || noAvatar} alt="" className="widgetSmImg" />
             <div className="widgetSmUser">
@@ -35,6 +36,7 @@ export default function WidgetSm() {
             </button>
           </li>
         ))}
+        {!users && "No New Members"}
       </ul>
     </div>
   );

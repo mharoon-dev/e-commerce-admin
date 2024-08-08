@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./Components/Sidebar/Sidebar.jsx";
@@ -10,20 +10,53 @@ import NewUser from "./Pages/NewUser/NewUser.jsx";
 import ProductList from "./Pages/ProductList/ProductList.jsx";
 import Product from "./Pages/Product/Product.jsx";
 import Login from "./Pages/login/Login.jsx";
-import { useSelector } from "react-redux";
-// import NewUser from "./pages/newUser/NewUser";
-// import ProductList from "./pages/productList/ProductList";
-// import Product from "./pages/product/Product";
-// import NewProduct from "./pages/newProduct/NewProduct";
+import { useDispatch, useSelector } from "react-redux";
+import NewProduct from "./Pages/NewProduct/NewProduct.jsx";
+import axios from "axios";
+import {BASE_URL} from "./utils/urls.jsx"
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+} from "./Redux/Slices/userSlice.jsx";
 
 function App() {
   const [open, setOpen] = useState(false);
-  const user = useSelector((state) => state.user.currentUser.isAdmin);
+  const user = useSelector((state) => state?.user?.currentUser?.isAdmin);
   console.log(user);
+  const dispatch = useDispatch();
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  const api = axios.create({
+    baseURL: BASE_URL,
+  });
+
+  useEffect(() => {
+    const isUserLoggedIn = async () => {
+      const token = JSON.parse(localStorage.getItem("token"));
+      if (!token) return dispatch(loginFailure()) && console.log("no token");
+
+      dispatch(loginStart());
+
+      try {
+        const res = await api.get("/auth/isuserloggedin", {
+          headers: { authorization: `Bearer ${token}` },
+        });
+        if (res.data) {
+          console.log(res.data);
+          dispatch(loginSuccess(res.data.data));
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch(loginFailure(error));
+      }
+    };
+
+    isUserLoggedIn();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -38,7 +71,7 @@ function App() {
           <Route path="/newUser" element={<NewUser />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:productId" element={<Product />} />
-          {/* <Route path="/newproduct" element={<NewProduct />} /> */}
+          <Route path="/newproduct" element={<NewProduct />} />
         </Routes>
       </div>
     </BrowserRouter>

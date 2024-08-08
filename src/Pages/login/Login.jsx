@@ -2,14 +2,50 @@ import { useState } from "react";
 import "./login.css";
 import { useDispatch } from "react-redux";
 import { login } from "../../Redux/apiCalls.jsx";
+import axios from "axios";
+import { BASE_URL } from "../../utils/urls.jsx";
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+} from "../../Redux/Slices/userSlice.jsx";
+import { useNavigate } from "react-router-dom";
+
+export const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    if (username && password) {
+      dispatch(loginStart());
+      api
+        .post("/auth/login", {
+          username,
+          password,
+        })
+        .then((res) => {
+          console.log(res.data);
+          localStorage.setItem("token", JSON.stringify(res.data.accessToken));
+          dispatch(loginSuccess(res.data.data));
+
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.message || err.message);
+          dispatch(loginFailure());
+        });
+    } else {
+      toast.error("Please fill all the fields 📝");
+    }
   };
   return (
     <div

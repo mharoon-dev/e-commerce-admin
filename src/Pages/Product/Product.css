@@ -65,11 +65,12 @@
   .productInfoItem {
     width: 150px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   
   .productInfoValue {
     font-weight: 300;
+    margin-left: 5px;
   }
   
   .productBottom {
