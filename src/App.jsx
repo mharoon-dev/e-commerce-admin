@@ -19,6 +19,9 @@ import {
   loginStart,
   loginSuccess,
 } from "./Redux/Slices/userSlice.jsx";
+import CategoryList from "./Pages/CategoryList/CategoryList.jsx";
+import Category from "./Pages/Category/Category.jsx";
+import NewCategory from "./Pages/NewCategory/NewCategory.jsx";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -36,7 +39,7 @@ function App() {
 
   useEffect(() => {
     const isUserLoggedIn = async () => {
-      const token = JSON.parse(localStorage.getItem("token"));
+      const token = JSON.parse(localStorage.getItem("adminToken"));
       if (!token) return dispatch(loginFailure()) && console.log("no token");
 
       dispatch(loginStart());
@@ -70,8 +73,11 @@ function App() {
           <Route path="/users/:userId" element={<User />} />
           <Route path="/newUser" element={<NewUser />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/categories" element={<CategoryList />} />
           <Route path="/product/:productId" element={<Product />} />
+          <Route path="/category/:categoryId" element={<Category />} />
           <Route path="/newproduct" element={<NewProduct />} />
+          <Route path="/newcategory" element={<NewCategory />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -5,9 +5,41 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import PublishIcon from "@mui/icons-material/Publish";
 import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { userRequest } from "../../requestMethod.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import "./User.css";
+import { updateUserStart, updateUserSuccess } from "../../Redux/Slices/usersSlice";
 
 export default function User() {
+  const location = useLocation();
+  const userId = location.pathname.split("/")[2];
+  const user = useSelector((state) =>
+    state.users.users.find((user) => user._id === userId)
+  );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState(user.username);
+  const [email, setEmail] = useState(user.email);
+  const [isAdmin, setIsAdmin] = useState(user.isAdmin);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(updateUserStart());
+    userRequest
+      .put(`/users/${user._id}`, { username, email, isAdmin })
+      .then(() => {
+        console.log("updated");
+        dispatch(updateUserSuccess({ ...user, username, email, isAdmin }));
+        navigate("/users");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+        dispatch(updateUserFailure());
+      });
+  };
 
   return (
     <>
@@ -27,32 +59,27 @@ export default function User() {
                 className="userShowImg"
               />
               <div className="userShowTopTitle">
-                <span className="userShowUsername">Anna Becker</span>
-                <span className="userShowUserTitle">Software Engineer</span>
+                <span className="userShowUsername">{user?.username}</span>
+                <span className="userShowUserTitle">{user?.isAdmin}</span>
               </div>
             </div>
             <div className="userShowBottom">
-              <span className="userShowTitle">Account Details</span>
+              <span className="userShowTitle">Email</span>
               <div className="userShowInfo">
                 <PermIdentityIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">annabeck99</span>
+                <span className="userShowInfoTitle">{user?.email}</span>
               </div>
               <div className="userShowInfo">
                 <CalendarTodayIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">10.12.1999</span>
+                <span className="userShowInfoTitle">
+                  {user?.createdAt.slice(0, 10)}
+                </span>
               </div>
               <span className="userShowTitle">Contact Details</span>
-              <div className="userShowInfo">
-                <PhoneAndroidIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">+1 123 456 67</span>
-              </div>
+
               <div className="userShowInfo">
                 <MailOutlineIcon className="userShowIcon" />
                 <span className="userShowInfoTitle">annabeck99@gmail.com</span>
-              </div>
-              <div className="userShowInfo">
-                <LocationSearchingIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">New York | USA</span>
               </div>
             </div>
           </div>
@@ -64,15 +91,9 @@ export default function User() {
                   <label>Username</label>
                   <input
                     type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     placeholder="annabeck99"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Full Name</label>
-                  <input
-                    type="text"
-                    placeholder="Anna Becker"
                     className="userUpdateInput"
                   />
                 </div>
@@ -80,23 +101,19 @@ export default function User() {
                   <label>Email</label>
                   <input
                     type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="annabeck99@gmail.com"
                     className="userUpdateInput"
                   />
                 </div>
                 <div className="userUpdateItem">
-                  <label>Phone</label>
+                  <label>Is Admin</label>
                   <input
                     type="text"
-                    placeholder="+1 123 456 67"
-                    className="userUpdateInput"
-                  />
-                </div>
-                <div className="userUpdateItem">
-                  <label>Address</label>
-                  <input
-                    type="text"
-                    placeholder="New York | USA"
+                    value={isAdmin}
+                    onChange={(e) => setIsAdmin(e.target.value)}
+                    placeholder="true or false"
                     className="userUpdateInput"
                   />
                 </div>
@@ -113,7 +130,9 @@ export default function User() {
                   </label>
                   <input type="file" id="file" style={{ display: "none" }} />
                 </div>
-                <button className="userUpdateButton">Update</button>
+                <button className="userUpdateButton" onClick={handleClick}>
+                  Update
+                </button>
               </div>
             </form>
           </div>

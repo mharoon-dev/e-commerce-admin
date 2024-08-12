@@ -50,12 +50,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
       iconName: <StorefrontOutlinedIcon className="sidebarIcon" />,
     },
     {
-      name: "Transactions",
+      name: "Categoryies",
       iconName: <AttachMoneyOutlinedIcon className="sidebarIcon" />,
-    },
-    {
-      name: "Reports",
-      iconName: <BarChartOutlinedIcon className="sidebarIcon" />,
     },
   ];
 
@@ -74,20 +70,6 @@ const Sidebar = ({ open, toggleDrawer }) => {
     },
   ];
 
-  const staff = [
-    {
-      name: "Manage",
-      iconName: <WorkOutlineOutlinedIcon className="sidebarIcon" />,
-    },
-    {
-      name: "Analytics",
-      iconName: <TimelineOutlinedIcon className="sidebarIcon" />,
-    },
-    {
-      name: "Report",
-      iconName: <ReportIcon className="sidebarIcon" />,
-    },
-  ];
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
@@ -127,17 +109,6 @@ const Sidebar = ({ open, toggleDrawer }) => {
       </List>
 
       <Divider />
-
-      <List>
-        {staff.map((obj) => (
-          <ListItem key={obj.name} disablePadding>
-            <ListItemButton>
-              {obj.iconName}
-              <ListItemText primary={obj.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </Box>
   );
   return (
@@ -159,14 +130,6 @@ const Sidebar = ({ open, toggleDrawer }) => {
                   Home
                 </li>
               </Link>
-              <li className="sidebarListItem">
-                <TimelineIcon className="sidebarIcon" />
-                Analytics
-              </li>
-              <li className="sidebarListItem">
-                <TrendingUpOutlinedIcon className="sidebarIcon" />
-                Sales
-              </li>
             </ul>
           </div>
 
@@ -191,14 +154,15 @@ const Sidebar = ({ open, toggleDrawer }) => {
                   Products
                 </li>
               </Link>
-              <li className="sidebarListItem">
-                <AttachMoneyOutlinedIcon className="sidebarIcon" />
-                Transactions
-              </li>
-              <li className="sidebarListItem">
-                <BarChartOutlinedIcon className="sidebarIcon" />
-                Reports
-              </li>
+              <Link
+                to="/categories"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li className="sidebarListItem">
+                  <StorefrontOutlinedIcon className="sidebarIcon" />
+                  Categories
+                </li>
+              </Link>
             </ul>
           </div>
 
@@ -216,24 +180,6 @@ const Sidebar = ({ open, toggleDrawer }) => {
               <li className="sidebarListItem">
                 <ChatBubbleOutlineOutlinedIcon className="sidebarIcon" />
                 Messages
-              </li>
-            </ul>
-          </div>
-
-          <div className="sidebarMenu">
-            <h3 className="sidebarTitle">Staff</h3>
-            <ul className="sidebarList">
-              <li className="sidebarListItem">
-                <WorkOutlineOutlinedIcon className="sidebarIcon" />
-                Manage
-              </li>
-              <li className="sidebarListItem">
-                <TimelineOutlinedIcon className="sidebarIcon" />
-                Analytics
-              </li>
-              <li className="sidebarListItem">
-                <ReportIcon className="sidebarIcon" />
-                Reports
               </li>
             </ul>
           </div>
