@@ -5,24 +5,17 @@ import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import DynamicFeedOutlinedIcon from "@mui/icons-material/DynamicFeedOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import ReportIcon from "@mui/icons-material/Report";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { Link } from "react-router-dom";
 const Sidebar = ({ open, toggleDrawer }) => {
   const dashboard = [
@@ -161,6 +154,15 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 <li className="sidebarListItem">
                   <StorefrontOutlinedIcon className="sidebarIcon" />
                   Categories
+                </li>
+              </Link>
+              <Link
+                to="/orders"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li className="sidebarListItem">
+                  <ShoppingCartIcon className="sidebarIcon" />
+                  Orders
                 </li>
               </Link>
             </ul>

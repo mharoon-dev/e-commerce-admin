@@ -22,6 +22,8 @@ import {
 import CategoryList from "./Pages/CategoryList/CategoryList.jsx";
 import Category from "./Pages/Category/Category.jsx";
 import NewCategory from "./Pages/NewCategory/NewCategory.jsx";
+import OrderList from "./Pages/OrderList/OrderList.jsx";
+import Order from "./Pages/Order/Order.jsx";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -71,8 +73,10 @@ function App() {
           <Route path="/login" element={!user && <Login />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/users/:userId" element={<User />} />
+          <Route path="/orders/:orderId" element={<Order />} />
           <Route path="/newUser" element={<NewUser />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/orders" element={<OrderList />} />
           <Route path="/categories" element={<CategoryList />} />
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/category/:categoryId" element={<Category />} />

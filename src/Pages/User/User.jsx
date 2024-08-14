@@ -2,7 +2,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import CodeIcon from "@mui/icons-material/Code";
 import PublishIcon from "@mui/icons-material/Publish";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +10,10 @@ import { userRequest } from "../../requestMethod.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import "./User.css";
-import { updateUserStart, updateUserSuccess } from "../../Redux/Slices/usersSlice";
+import {
+  updateUserStart,
+  updateUserSuccess,
+} from "../../Redux/Slices/usersSlice";
 
 export default function User() {
   const location = useLocation();
@@ -64,22 +67,23 @@ export default function User() {
               </div>
             </div>
             <div className="userShowBottom">
-              <span className="userShowTitle">Email</span>
-              <div className="userShowInfo">
-                <PermIdentityIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">{user?.email}</span>
-              </div>
               <div className="userShowInfo">
                 <CalendarTodayIcon className="userShowIcon" />
                 <span className="userShowInfoTitle">
                   {user?.createdAt.slice(0, 10)}
                 </span>
               </div>
+              <div className="userShowInfo">
+                <CodeIcon className="userShowIcon" />
+                <span className="userShowInfoTitle">
+                  {user?.refrenceCode || "No refrence code"}
+                </span>
+              </div>
               <span className="userShowTitle">Contact Details</span>
 
               <div className="userShowInfo">
-                <MailOutlineIcon className="userShowIcon" />
-                <span className="userShowInfoTitle">annabeck99@gmail.com</span>
+                <PermIdentityIcon className="userShowIcon" />
+                <span className="userShowInfoTitle">{user?.email}</span>
               </div>
             </div>
           </div>

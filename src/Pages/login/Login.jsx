@@ -21,7 +21,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const handleClick = (e) => {
     e.preventDefault();
     if (username && password) {
@@ -33,14 +33,16 @@ const Login = () => {
         })
         .then((res) => {
           console.log(res.data);
-          localStorage.setItem("adminToken", JSON.stringify(res.data.accessToken));
+          localStorage.setItem(
+            "adminToken",
+            JSON.stringify(res.data.accessToken)
+          );
           dispatch(loginSuccess(res.data.data));
 
           navigate("/");
         })
         .catch((err) => {
           console.log(err);
-          toast.error(err?.response?.data?.message || err.message);
           dispatch(loginFailure());
         });
     } else {

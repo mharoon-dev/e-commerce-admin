@@ -1,53 +1,70 @@
 import "./NewUser.css";
+import { useState } from "react";
+import { userRequest } from "../../requestMethod.js";
 
 export default function NewUser() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // generate 6 digit random number
+    const refrenceCode = Math.floor(Math.random() * 1000006);
+    if (username && email && password) {
+      const addUser = await userRequest
+        .post("/auth/register", {
+          username,
+          email,
+          password,
+          refrenceCode,
+        })
+        .then((res) => {
+          console.log(res.data);
+          alert("User added successfully");
+          window.location.reload();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    } else {
+      alert("Please fill all the fields 📝");
+    }
+  };
   return (
     <div className="newUser">
       <h1 className="newUserTitle">New User</h1>
-      <form className="newUserForm">
-        <div className="newUserItem">
-          <label>Username</label>
-          <input type="text" placeholder="john" />
-        </div>
-        <div className="newUserItem">
-          <label>Full Name</label>
-          <input type="text" placeholder="John Smith" />
-        </div>
-        <div className="newUserItem">
-          <label>Email</label>
-          <input type="email" placeholder="john@gmail.com" />
-        </div>
-        <div className="newUserItem">
-          <label>Password</label>
-          <input type="password" placeholder="password" />
-        </div>
-        <div className="newUserItem">
-          <label>Phone</label>
-          <input type="text" placeholder="+1 123 456 78" />
-        </div>
-        <div className="newUserItem">
-          <label>Address</label>
-          <input type="text" placeholder="New York | USA" />
-        </div>
-        <div className="newUserItem">
-          <label>Gender</label>
-          <div className="newUserGender">
-            <input type="radio" name="gender" id="male" value="male" />
-            <label for="male">Male</label>
-            <input type="radio" name="gender" id="female" value="female" />
-            <label for="female">Female</label>
-            <input type="radio" name="gender" id="other" value="other" />
-            <label for="other">Other</label>
+      <form className="newUserForm" onSubmit={handleSubmit}>
+        <div>
+          <div className="newUserItem">
+            <label>Username</label>
+            <input
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="john"
+            />
+          </div>
+          <div className="newUserItem">
+            <label>Email</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="john@gmail.com"
+            />
+          </div>
+          <div className="newUserItem">
+            <label>Password</label>
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="password"
+            />
           </div>
         </div>
-        <div className="newUserItem">
-          <label>Active</label>
-          <select className="newUserSelect" name="active" id="active">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </div>
-        <button className="newUserButton">Create</button>
+
+        <button className="newUserButton" type="submit">
+          Create
+        </button>
       </form>
     </div>
   );
