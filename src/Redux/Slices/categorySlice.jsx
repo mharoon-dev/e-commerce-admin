@@ -29,7 +29,7 @@ export const categorySlice = createSlice({
     deleteCategorySuccess: (state, action) => {
       state.isFetching = false;
       state.category.splice(
-        state.products.findIndex((item) => item._id === action.payload),
+        state.category.findIndex((item) => item._id === action.payload),
         1
       );
     },

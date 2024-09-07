@@ -16,6 +16,10 @@ export default function OrderList() {
   const orders = useSelector((state) => state?.orders?.orders);
   console.log(orders);
 
+  const Button = ({ type }) => {
+    return <button className={"widgetLgButton " + type}>{type}</button>;
+  };
+
   useEffect(() => {
     dispatch(getOrderStart());
     userRequest
@@ -35,21 +39,24 @@ export default function OrderList() {
     {
       field: "products",
       headerName: "Products",
-      width: 200,
+      width: 150,
       renderCell: (params) => {
         return <span>{params.row.products.length} products</span>;
       },
     },
-    { field: "amount", headerName: "Amount", width: 200 },
+    { field: "amount", headerName: "Amount", width: 120 },
     {
       field: "address",
       headerName: "Address",
-      width: 160,
+      width: 300,
     },
     {
       field: "status",
       headerName: "status",
-      width: 160,
+      width: 150,
+      renderCell: (params) => {
+        return <Button type={params.row.status} />;
+      },
     },
     {
       field: "action",

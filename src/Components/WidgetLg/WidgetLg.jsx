@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../../requestMethod.js";
 import "./widgetLg.css";
 import { format } from "timeago.js";
+import { Link } from "react-router-dom";
 
 export default function WidgetLg() {
   const [orders, setOrders] = useState([]);
@@ -31,7 +32,13 @@ export default function WidgetLg() {
         {orders.map((order) => (
           <tr className="widgetLgTr" key={order._id}>
             <td className="widgetLgUser">
-              <span className="widgetLgName">{order.userId}</span>
+              <Link
+                to={`/orders/${order._id}`}
+                key={order._id}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <span className="widgetLgName">{order.userId}</span>
+              </Link>
             </td>
             <td className="widgetLgDate">{format(order.createdAt)}</td>
             <td className="widgetLgAmount">${order.amount}</td>

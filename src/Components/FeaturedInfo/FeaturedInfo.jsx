@@ -9,13 +9,26 @@ export default function FeaturedInfo() {
   const [perc, setPerc] = useState(0);
 
   useEffect(() => {
+    console.log(perc);
+  }, [perc]);
+
+  useEffect(() => {
     const getIncome = async () => {
       try {
         const res = await userRequest.get("orders/income");
         console.log(res.data);
+
         setIncome(res.data);
-        setPerc((res.data[1].total * 100) / res.data[0].total - 100);
-      } catch {}
+
+        if (res.data.length >= 2) {
+          const percentage =
+            ((res.data[0].total - res.data[1].total) / res.data[1].total) * 100;
+          console.log(percentage);
+          setPerc(percentage);
+        }
+      } catch (err) {
+        alert(err);
+      }
     };
     getIncome();
   }, []);
@@ -23,36 +36,16 @@ export default function FeaturedInfo() {
   return (
     <div className="featured">
       <div className="featuredItem">
-        <span className="featuredTitle">Revanue</span>
+        <span className="featuredTitle">Revenue</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">${income[1]?.total}</span>
+          <span className="featuredMoney">${income[0]?.total}</span>
           <span className="featuredMoneyRate">
-            %{Math.floor(perc)}{" "}
+            %{perc.toFixed(2)}{" "}
             {perc < 0 ? (
               <ArrowDownwardIcon className="featuredIcon negative" />
             ) : (
               <ArrowUpwardIcon className="featuredIcon" />
             )}
-          </span>
-        </div>
-        <span className="featuredSub">Compared to last month</span>
-      </div>
-      <div className="featuredItem">
-        <span className="featuredTitle">Sales</span>
-        <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$4,415</span>
-          <span className="featuredMoneyRate">
-            -1.4 <ArrowDownwardIcon className="featuredIcon negative" />
-          </span>
-        </div>
-        <span className="featuredSub">Compared to last month</span>
-      </div>
-      <div className="featuredItem">
-        <span className="featuredTitle">Cost</span>
-        <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$2,225</span>
-          <span className="featuredMoneyRate">
-            +2.4 <ArrowUpwardIcon className="featuredIcon" />
           </span>
         </div>
         <span className="featuredSub">Compared to last month</span>

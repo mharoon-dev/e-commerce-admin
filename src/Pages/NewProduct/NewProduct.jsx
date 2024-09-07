@@ -10,6 +10,7 @@ import app from "../../firebase.js";
 import { addProduct } from "../../Redux/apiCalls.jsx";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { userRequest } from "../../requestMethod.js";
 
 export default function NewProduct() {
   const [inputs, setInputs] = useState({});
@@ -73,9 +74,10 @@ export default function NewProduct() {
             color: colors,
             size: sizes,
           };
-          addProduct(product, dispatch)
+          userRequest.post("/products", product)
             .then((res) => {
               console.log(res);
+              alert("Product added successfully");
               navigate("/products");
             })
             .catch((err) => {

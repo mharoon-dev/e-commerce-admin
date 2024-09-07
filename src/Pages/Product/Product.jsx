@@ -14,6 +14,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase.js";
+import { updateProductSuccess } from "../../Redux/Slices/productSlice.jsx";
 
 export default function Product() {
   const location = useLocation();
@@ -28,6 +29,10 @@ export default function Product() {
   const [cat, setCat] = useState([]);
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [desc, setDesc] = useState("");
+  const [inStock, setInStock] = useState(false);
   const dispatch = useDispatch();
 
   const MONTHS = useMemo(
@@ -56,6 +61,7 @@ export default function Product() {
     const getStats = async () => {
       try {
         const res = await userRequest.get("orders/income?pid=" + productId);
+        console.log(res.data);
         const list = res.data.sort((a, b) => {
           return a._id - b._id;
         });
@@ -91,53 +97,94 @@ export default function Product() {
     setSizes(sizesArray.map((size) => size.trim()));
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    const fileName = new Date().getTime() + file?.name;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
+    if (file) {
+      const fileName = new Date().getTime() + file?.name;
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+            console.log(product);
+            console.log("product upar hai");
+
+            const updatedProduct = {
+              img: downloadURL && downloadURL,
+              title: name ? name : product.title,
+              price: price ? price * 1 : product.price,
+              desc: desc ? desc : product.desc,
+              categories: cat.length > 0 ? cat : product.categories,
+              color: colors.length > 0 ? colors : product.color,
+              size: sizes.length > 0 ? sizes : product.size,
+              inStock: inStock ? inStock : product.inStock,
+            };
+            console.log(updatedProduct);
+
+            const res = await userRequest
+              .put("/products/" + productId, updatedProduct)
+              // update
+              .then((res) => {
+                console.log(res);
+                alert("Product updated");
+                navigate("/products");
+                dispatch(updateProductSuccess({ productId, product }));
+              })
+              .catch((err) => {
+                console.log(err);
+                alert(err);
+              });
+          });
         }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const product = {
-            ...inputs,
-            img: downloadURL,
-            categories: cat,
-            color: colors,
-            size: sizes,
-          };
-          updateProduct(productId, product, dispatch)
-            .then((res) => {
-              console.log(res);
-              navigate("/products");
-            })
-            .catch((err) => {
-              console.log(err);
-              alert(err);
-            });
+      );
+    } else {
+      console.log(product);
+      console.log("product upar hai");
+      const updatedProduct = {
+        title: name ? name : product.title,
+        price: price ? price * 1 : product.price,
+        desc: desc ? desc : product.desc,
+        categories: cat.length > 0 ? cat : product.categories,
+        color: colors.length > 0 ? colors : product.color,
+        size: sizes.length > 0 ? sizes : product.size,
+        inStock: inStock ? inStock : product.inStock,
+      };
+      console.log(updatedProduct);
+      const res = await userRequest
+        .put("/products/" + productId, updatedProduct)
+        // update
+        .then((res) => {
+          console.log(res);
+          alert("Product updated");
+          navigate("/products");
+          dispatch(updateProductSuccess({ productId, product }));
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err);
         });
-      }
-    );
+    }
   };
 
   return (
@@ -150,7 +197,19 @@ export default function Product() {
       </div>
       <div className="productTop">
         <div className="productTopLeft">
-          <Chart grid data={pStats} dataKey="Sales" title="Sales Performance" />
+          {pStats.length === 0 ? (
+            <h3 style={{ color: "red", textAlign: "center" ,justifyContent:"center", height:"100%", display:"flex", alignItems:"center",
+             }}>
+              NO SALE OF THIS PRODUCT
+            </h3>
+          ) : (
+            <Chart
+              grid
+              data={pStats}
+              dataKey="Sales"
+              title="Sales Performance"
+            />
+          )}
         </div>
         <div className="productTopRight">
           <div className="productInfoTop">
@@ -193,19 +252,19 @@ export default function Product() {
             <label>Product Name</label>
             <input
               type="text"
-              onChange={handleChange}
+              onChange={(e) => setName(e.target.value)}
               placeholder={product.title}
             />
             <label>Product Description</label>
             <input
               type="text"
-              onChange={handleChange}
+              onChange={(e) => setDesc(e.target.value)}
               placeholder={product.desc}
             />
             <label>Price</label>
             <input
               type="text"
-              onChange={handleChange}
+              onChange={(e) => setPrice(e.target.value)}
               placeholder={product.price}
             />
             <label>Categories</label>
@@ -220,27 +279,26 @@ export default function Product() {
               onChange={handleColors}
               placeholder={product.color}
             />
-            <label>Size</label>
+            <label>Sizes</label>
             <input
               type="text"
               onChange={handleSizes}
               placeholder={product.size}
             />
             <label>In Stock</label>
-            <select name="inStock" onChange={handleChange} id="idStock">
+            <select
+              name="inStock"
+              id="idStock"
+              onChange={(e) => setInStock(e.target.value)}
+            >
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>
           </div>
           <div className="productFormRight">
             <div className="productUpload">
-              <img
-                src={file ? URL?.createObjectURL(file) : product.img}
-                alt=""
-                style={{ border: "1px solid gray" }}
-                className="productUploadImg"
-              />
-              <label for="file">
+              <img src={product.img} alt="" className="productUploadImg" />
+              <label htmlFor="file">
                 <PublishIcon />
               </label>
               <input

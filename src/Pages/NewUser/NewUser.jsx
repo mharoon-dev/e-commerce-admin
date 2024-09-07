@@ -1,35 +1,73 @@
 import "./NewUser.css";
 import { useState } from "react";
 import { userRequest } from "../../requestMethod.js";
-
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase.js";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 export default function NewUser() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [file, setFile] = useState();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // generate 6 digit random number
     const refrenceCode = Math.floor(Math.random() * 1000006);
-    if (username && email && password) {
-      const addUser = await userRequest
-        .post("/auth/register", {
-          username,
-          email,
-          password,
-          refrenceCode,
-        })
-        .then((res) => {
-          console.log(res.data);
-          alert("User added successfully");
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert(err);
+    const fileName = new Date().getTime() + file.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          const user = {
+            username,
+            email,
+            password,
+            refrenceCode,
+            img: downloadURL,
+          };
+          userRequest
+            .post("/auth/register", user)
+            .then((res) => {
+              console.log(res);
+              alert("User has been created");
+              navigate("/users");
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+            });
         });
-    } else {
-      alert("Please fill all the fields 📝");
-    }
+      }
+    );
   };
   return (
     <div className="newUser">
@@ -58,6 +96,14 @@ export default function NewUser() {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="password"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>User Image</label>
+            <input
+              type="file"
+              id="file"
+              onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
         </div>

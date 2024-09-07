@@ -81,3 +81,12 @@
   }
 
 }
+
+@media (max-width: 500px) {
+  .widgetLgDate,
+  .widgetLgAmount,
+  .widgetLgName,
+  .widgetLgTh {
+    font-size: 9px !important;
+  }  
+}

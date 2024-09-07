@@ -65,8 +65,23 @@ export default function Order() {
                 <span className="userShowInfoTitle">
                   {order?.products.map((product) => (
                     <div key={product._id}>
-                      <p>Product ID: {product.productId}</p>
+                      <img
+                        src={product.img}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover "
+                          , borderRadius: "50% "
+                        }}
+                        alt=""
+                      />
+                      <p>Product ID: {product._id}</p>
                       <p>Quantity: {product.quantity}</p>
+                      <p>Price: {product.price}</p>
+                      <p>Title: {product.title}</p>
+                      <p>Size: {product.size}</p>
+                      <p>Color: {product.color}</p>
+
                       <br />
                     </div>
                   ))}
