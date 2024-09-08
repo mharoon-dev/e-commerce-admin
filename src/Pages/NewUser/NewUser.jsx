@@ -15,6 +15,8 @@ export default function NewUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [file, setFile] = useState();
+  const [phone, setPhone] = useState();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,8 +54,10 @@ export default function NewUser() {
             email,
             password,
             refrenceCode,
+            phoneNumber: +phone,
             img: downloadURL,
           };
+          console.log(user);
           userRequest
             .post("/auth/register", user)
             .then((res) => {
@@ -88,6 +92,14 @@ export default function NewUser() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="john@gmail.com"
+            />
+          </div>
+          <div className="newUserItem">
+            <label>Phone</label>
+            <input
+              onChange={(e) => setPhone(e.target.value)}
+              type="tel"
+              placeholder="03212345678 (easypaise , jazzcash)"
             />
           </div>
           <div className="newUserItem">

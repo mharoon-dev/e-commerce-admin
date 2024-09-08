@@ -32,8 +32,12 @@ export default function User() {
   const [username, setUsername] = useState(user?.username);
   const [email, setEmail] = useState(user?.email);
   const [isAdmin, setIsAdmin] = useState(user?.isAdmin);
+  const [phone, setPhone] = useState(user?.phoneNumber);
   const [file, setFile] = useState(null);
 
+  useEffect(() => {
+    console.log(phone);
+  }, [phone]);
   useEffect(() => {
     return () => {
       if (file) {
@@ -70,6 +74,7 @@ export default function User() {
                 username,
                 email,
                 isAdmin: isAdmin === "true" ? true : false,
+                phoneNumber: +phone,
                 img: downloadURL,
               })
               .then(() => {
@@ -78,7 +83,8 @@ export default function User() {
                     ...user,
                     username,
                     email,
-                    isAdmin,
+                    isAdmin: isAdmin === "true" ? true : false,
+                    phoneNumber: +phone,
                     img: downloadURL,
                   })
                 );
@@ -95,7 +101,12 @@ export default function User() {
       );
     } else {
       userRequest
-        .put(`/users/${user._id}`, { username, email, isAdmin })
+        .put(`/users/${user._id}`, {
+          username,
+          email,
+          isAdmin,
+          phoneNumber: +phone,
+        })
         .then(() => {
           dispatch(updateUserSuccess({ ...user, username, email, isAdmin }));
           navigate("/users");
@@ -146,6 +157,11 @@ export default function User() {
             <div className="userShowInfo">
               <span className="userShowInfoTitle">Email: {user?.email}</span>
             </div>
+            <div className="userShowInfo">
+              <span className="userShowInfoTitle">
+                Phone: {user?.phoneNumber}
+              </span>
+            </div>
             {user?.byRefrence && (
               <div className="userShowInfo">
                 <span className="userShowInfoTitle">
@@ -164,7 +180,7 @@ export default function User() {
 
             <div className="userShowInfo">
               <span className="userShowInfoTitle">
-                isAdmin: {user?.isAdmin}
+                isAdmin: {user?.isAdmin ? "true" : "false"}
               </span>
             </div>
           </div>
@@ -191,6 +207,16 @@ export default function User() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="annabeck99@gmail.com"
+                  className="userUpdateInput"
+                />
+              </div>
+              <div className="userUpdateItem">
+                <label>Phone</label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="03214568798 (easypaise , jazzcash)"
                   className="userUpdateInput"
                 />
               </div>

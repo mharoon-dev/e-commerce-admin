@@ -70,8 +70,8 @@ export default function Order() {
                         style={{
                           width: "50px",
                           height: "50px",
-                          objectFit: "cover "
-                          , borderRadius: "50% "
+                          objectFit: "cover ",
+                          borderRadius: "50% ",
                         }}
                         alt=""
                       />
@@ -96,6 +96,11 @@ export default function Order() {
               <div className="userShowInfo">
                 <span className="userShowInfoTitle">
                   Address: {order?.address}
+                </span>
+              </div>
+              <div className="userShowInfo">
+                <span className="userShowInfoTitle">
+                  Phone: {order?.phoneNumber}
                 </span>
               </div>
               <div className="userShowInfo">
