@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: wrap !important;
   }
   
   .featuredItem {
@@ -29,6 +29,7 @@
   .featuredMoney{
       font-size: 30px;
       font-weight: 600;
+      text-align: center !important;
   }
   
   .featuredMoneyRate{
@@ -50,4 +51,11 @@
   .featuredSub{
       font-size: 15px;
       color: gray;
+  }
+
+  @media (max-width: 576px) {
+    .featured {
+        flex-direction: column !important;
+    }
+    
   }

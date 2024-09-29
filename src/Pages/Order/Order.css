@@ -22,7 +22,7 @@
 
 .userContainer {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap !important;
   margin-top: 20px;
 }
 
@@ -178,5 +178,9 @@
 
   .userUpdateButton {
     width: 20% !important;
+  }
+
+  .userContainer {
+    flex-direction: column-reverse !important;
   }
 }

@@ -4,46 +4,18 @@ import productReducer from "./Slices/productSlice.jsx";
 import categoryReducer from "./Slices/categorySlice.jsx";
 import usersReducer from "./Slices/usersSlice.jsx";
 import ordersReducer from "./Slices/orderSlice.jsx";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
-
-const rootReducers = combineReducers({
-  user: userReducer,
-  product: productReducer,
-  category: categoryReducer,
-  users: usersReducer,
-  orders: ordersReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, rootReducers);
-
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-  devTools: process.env.NODE_ENV !== "production" || {
-    trace: true,
+const store = configureStore(
+  {
+    reducer: {
+      user: userReducer,
+      product: productReducer,
+      category: categoryReducer,
+      users: usersReducer,
+      orders: ordersReducer,
+    },
   },
-});
+  +window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-export let persistor = persistStore(store);
 export default store;

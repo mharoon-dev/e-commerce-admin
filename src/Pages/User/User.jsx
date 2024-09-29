@@ -109,6 +109,7 @@ export default function User() {
         })
         .then(() => {
           dispatch(updateUserSuccess({ ...user, username, email, isAdmin }));
+          alert("User updated successfully");
           navigate("/users");
         })
         .catch((err) => {

@@ -13,7 +13,7 @@ import Login from "./Pages/login/Login.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import NewProduct from "./Pages/NewProduct/NewProduct.jsx";
 import axios from "axios";
-import {BASE_URL} from "./utils/urls.jsx"
+import { BASE_URL } from "./utils/urls.jsx";
 import {
   loginFailure,
   loginStart,
@@ -27,7 +27,7 @@ import Order from "./Pages/Order/Order.jsx";
 
 function App() {
   const [open, setOpen] = useState(false);
-  const user = useSelector((state) => state?.user?.currentUser?.isAdmin);
+  const user = useSelector((state) => state?.user?.currentUser);
   console.log(user);
   const dispatch = useDispatch();
 
@@ -65,9 +65,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      {user === true && <Topbar open={open} toggleDrawer={toggleDrawer} />}
+      {user  && <Topbar open={open} toggleDrawer={toggleDrawer} />}
       <div className="container">
-        {user === true && <Sidebar open={open} toggleDrawer={toggleDrawer} />}
+        {user && <Sidebar open={open} toggleDrawer={toggleDrawer} />}
         <Routes>
           <Route path="/" element={user ? <Home /> : <Login />} />
           <Route path="/login" element={!user && <Login />} />

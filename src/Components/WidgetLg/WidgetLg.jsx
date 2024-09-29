@@ -11,7 +11,8 @@ export default function WidgetLg() {
     const getOrders = async () => {
       try {
         const res = await userRequest.get("orders");
-        setOrders(res.data);
+        let slicezation = res.data.slice(0, 5);
+        setOrders(slicezation);
       } catch {}
     };
     getOrders();

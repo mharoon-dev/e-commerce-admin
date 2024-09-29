@@ -52,6 +52,24 @@ const Sidebar = ({ open, toggleDrawer }) => {
     },
   ];
 
+  const CreateMenu = [
+    {
+      name: "Create User",
+      iconName: <PermIdentityOutlinedIcon className="sidebarIcon" />,
+      location: "/newUser",
+    },
+    {
+      name: "Create Products",
+      iconName: <StorefrontOutlinedIcon className="sidebarIcon" />,
+      location: "/newproduct",
+    },
+    {
+      name: "Create Categories",
+      iconName: <AttachMoneyOutlinedIcon className="sidebarIcon" />,
+      location: "/newcategory",
+    },
+  ];
+
   const handleItemClick = (name) => {
     setActive(name);
   };
@@ -76,7 +94,30 @@ const Sidebar = ({ open, toggleDrawer }) => {
 
       <List>
         {quickMenu.map((obj) => (
-          <Link to={obj.location} style={{ textDecoration: "none" , color: "gray" }}>
+          <Link
+            to={obj.location}
+            style={{ textDecoration: "none", color: "gray" }}
+          >
+            <ListItem
+              key={obj.name}
+              disablePadding
+              onClick={() => handleItemClick(obj.name)}
+            >
+              <ListItemButton>
+                {obj.iconName}
+                <ListItemText primary={obj.name} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+
+      <List>
+        {CreateMenu.map((obj) => (
+          <Link
+            to={obj.location}
+            style={{ textDecoration: "none", color: "gray" }}
+          >
             <ListItem
               key={obj.name}
               disablePadding
@@ -179,6 +220,54 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 >
                   <ShoppingCartIcon className="sidebarIcon" />
                   Orders
+                </li>
+              </Link>
+            </ul>
+          </div>
+
+          <div className="sidebarMenu">
+            <h3 className="sidebarTitle">Create</h3>
+            <ul className="sidebarList">
+              <Link
+                to="/newUser"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li
+                  className={`sidebarListItem ${
+                    active === "createUser" ? "active" : ""
+                  }`}
+                  onClick={() => handleItemClick("createUser")}
+                >
+                  <PermIdentityOutlinedIcon className="sidebarIcon" />
+                  Create User
+                </li>
+              </Link>
+              <Link
+                to="/NewProduct"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li
+                  className={`sidebarListItem ${
+                    active === "CreateProducts" ? "active" : ""
+                  }`}
+                  onClick={() => handleItemClick("CreateProducts")}
+                >
+                  <StorefrontOutlinedIcon className="sidebarIcon" />
+                  Create Products
+                </li>
+              </Link>
+              <Link
+                to="/newcategory"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li
+                  className={`sidebarListItem ${
+                    active === "createCategory" ? "active" : ""
+                  }`}
+                  onClick={() => handleItemClick("createCategory")}
+                >
+                  <StorefrontOutlinedIcon className="sidebarIcon" />
+                  Create Categories
                 </li>
               </Link>
             </ul>

@@ -7,6 +7,8 @@ import { userRequest } from "../../requestMethod.js";
 export default function FeaturedInfo() {
   const [income, setIncome] = useState([]);
   const [perc, setPerc] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   useEffect(() => {
     console.log(perc);
@@ -30,7 +32,29 @@ export default function FeaturedInfo() {
         alert(err);
       }
     };
+
+    const getProducts = async () => {
+      try {
+        const res = await userRequest.get("products");
+        console.log(res.data);
+        setTotalProducts(res.data.length);
+      } catch (err) {
+        alert(err);
+      }
+    };
+
+    const getOrders = async () => {
+      try {
+        const res = await userRequest.get("orders");
+        console.log(res.data);
+        setTotalOrders(res.data.length);
+      } catch (err) {
+        alert(err);
+      }
+    };
     getIncome();
+    getProducts();
+    getOrders();
   }, []);
 
   return (
@@ -49,6 +73,36 @@ export default function FeaturedInfo() {
           </span>
         </div>
         <span className="featuredSub">Compared to last month</span>
+      </div>
+
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Products</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">{totalProducts}</span>
+          <span className="featuredMoneyRate">
+            {/* %{perc.toFixed(2)}{" "}
+            {perc < 0 ? (
+              <ArrowDownwardIcon className="featuredIcon negative" />
+            ) : (
+              <ArrowUpwardIcon className="featuredIcon" />
+            )} */}
+          </span>
+        </div>
+      </div>
+
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Orders</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">{totalOrders}</span>
+          <span className="featuredMoneyRate">
+            {/* %{perc.toFixed(2)}{" "}
+            {perc < 0 ? (
+              <ArrowDownwardIcon className="featuredIcon negative" />
+            ) : (
+              <ArrowUpwardIcon className="featuredIcon" />
+            )} */}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -38,8 +38,7 @@ const Login = () => {
             JSON.stringify(res.data.accessToken)
           );
           dispatch(loginSuccess(res.data.data));
-
-          navigate("/");
+          window.location.reload();
         })
         .catch((err) => {
           alert(err);

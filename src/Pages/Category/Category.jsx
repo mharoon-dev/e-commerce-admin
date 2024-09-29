@@ -31,6 +31,7 @@ export default function Category() {
       .then(() => {
         console.log("updated");
         dispatch(updateCategorySuccess({ ...category, name }));
+        alert("Category updated successfully");
         navigate("/categories");
       })
       .catch((err) => {

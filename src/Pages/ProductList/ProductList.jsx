@@ -5,6 +5,15 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getProducts } from "../../Redux/apiCalls.jsx";
+import { userRequest } from "../../requestMethod.js";
+import {
+  deleteProductFailure,
+  deleteProductStart,
+  deleteProductSuccess,
+  getProductFailure,
+  getProductStart,
+  getProductSuccess,
+} from "../../Redux/Slices/productSlice.jsx";
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -15,7 +24,18 @@ export default function ProductList() {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    deleteProduct(id, dispatch) && console.log("deleted");
+    dispatch(deleteProductStart());
+    userRequest
+      .delete(`/products/${id}`)
+      .then((res) => {
+        dispatch(deleteProductSuccess(id));
+        alert("Product deleted successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+        dispatch(deleteProductFailure());
+      });
   };
 
   const columns = [
