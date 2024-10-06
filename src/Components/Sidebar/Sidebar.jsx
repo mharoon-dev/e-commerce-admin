@@ -50,6 +50,11 @@ const Sidebar = ({ open, toggleDrawer }) => {
       iconName: <DynamicFeedOutlinedIcon className="sidebarIcon" />,
       location: "/orders",
     },
+    {
+      name: "WinDraws",
+      iconName: <DynamicFeedOutlinedIcon className="sidebarIcon" />,
+      location: "/windraws",
+    },
   ];
 
   const CreateMenu = [
@@ -151,9 +156,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
             <ul className="sidebarList">
               <Link to="/" style={{ textDecoration: "none", color: "gray" }}>
                 <li
-                  className={`sidebarListItem ${
-                    active === "Home" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "Home" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("Home")}
                 >
                   <LineStyleIcon className="sidebarIcon" />
@@ -171,9 +175,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "Users" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "Users" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("Users")}
                 >
                   <PermIdentityOutlinedIcon className="sidebarIcon" />
@@ -185,9 +188,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "Products" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "Products" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("Products")}
                 >
                   <StorefrontOutlinedIcon className="sidebarIcon" />
@@ -199,9 +201,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "Categories" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "Categories" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("Categories")}
                 >
                   <StorefrontOutlinedIcon className="sidebarIcon" />
@@ -213,13 +214,25 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "Orders" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "Orders" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("Orders")}
                 >
                   <ShoppingCartIcon className="sidebarIcon" />
                   Orders
+                </li>
+              </Link>
+              <Link
+                to="/Windraws"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                <li
+                  className={`sidebarListItem ${active === "WinDraws" ? "active" : ""
+                    }`}
+                  onClick={() => handleItemClick("WinDraws")}
+                >
+                  <ShoppingCartIcon className="sidebarIcon" />
+                  WinDraws
                 </li>
               </Link>
             </ul>
@@ -233,9 +246,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "createUser" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "createUser" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("createUser")}
                 >
                   <PermIdentityOutlinedIcon className="sidebarIcon" />
@@ -247,9 +259,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "CreateProducts" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "CreateProducts" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("CreateProducts")}
                 >
                   <StorefrontOutlinedIcon className="sidebarIcon" />
@@ -261,9 +272,8 @@ const Sidebar = ({ open, toggleDrawer }) => {
                 style={{ textDecoration: "none", color: "gray" }}
               >
                 <li
-                  className={`sidebarListItem ${
-                    active === "createCategory" ? "active" : ""
-                  }`}
+                  className={`sidebarListItem ${active === "createCategory" ? "active" : ""
+                    }`}
                   onClick={() => handleItemClick("createCategory")}
                 >
                   <StorefrontOutlinedIcon className="sidebarIcon" />

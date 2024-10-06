@@ -24,6 +24,8 @@ import Category from "./Pages/Category/Category.jsx";
 import NewCategory from "./Pages/NewCategory/NewCategory.jsx";
 import OrderList from "./Pages/OrderList/OrderList.jsx";
 import Order from "./Pages/Order/Order.jsx";
+import WinDraw from "./Pages/WinDraw/WinDraw.jsx";
+import SingleWindraw from "./Pages/SingleWindraw/SingleWindraw.jsx";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -74,9 +76,11 @@ function App() {
           <Route path="/users" element={<UserList />} />
           <Route path="/users/:userId" element={<User />} />
           <Route path="/orders/:orderId" element={<Order />} />
+          <Route path="/windraw/:windrawId" element={<SingleWindraw />} />
           <Route path="/newUser" element={<NewUser />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/orders" element={<OrderList />} />
+          <Route path="/windraws" element={<WinDraw />} />
           <Route path="/categories" element={<CategoryList />} />
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/category/:categoryId" element={<Category />} />

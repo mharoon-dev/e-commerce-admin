@@ -4,6 +4,7 @@ import productReducer from "./Slices/productSlice.jsx";
 import categoryReducer from "./Slices/categorySlice.jsx";
 import usersReducer from "./Slices/usersSlice.jsx";
 import ordersReducer from "./Slices/orderSlice.jsx";
+import winDrawReducer from "./Slices/winDrawSlice.jsx";
 
 const store = configureStore(
   {
@@ -13,6 +14,7 @@ const store = configureStore(
       category: categoryReducer,
       users: usersReducer,
       orders: ordersReducer,
+      winDraw: winDrawReducer,
     },
   },
   +window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
